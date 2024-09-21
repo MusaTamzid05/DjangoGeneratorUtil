@@ -77,3 +77,27 @@ func CopyDir(srcDirPath, dstDirPath string) error  {
 
     return nil
 }
+
+func FileExists(path string) bool {
+    _, err := os.Stat(path)
+
+    if err != nil {
+        return false
+    }
+
+    return true
+}
+
+func GetAssetPath() string   {
+
+    currentDirPath, err := os.Getwd()
+
+    if err != nil {
+        log.Fatalln(err)
+
+    }
+
+
+    return currentDirPath  + string(os.PathSeparator) + "assets"
+}
+

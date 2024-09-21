@@ -4,6 +4,7 @@ package lib
 import (
     "log"
     "os"
+    "strings"
 )
 
 
@@ -57,11 +58,6 @@ func GenerateCSS(bootstrap bool) {
         CopyDir("assets/bootstrap", "static")
 
     }
-
-
-
-
-
 }
 
 
@@ -93,5 +89,50 @@ func GenerateTemplate() {
 
     baseTemplatePath := "assets" + string(os.PathSeparator) + "base.html"
     err = CopyFile(baseTemplatePath, dstDirPath)
+
+}
+
+func GenerateView(viewName string) {
+
+    currentDirPath, err := os.Getwd()
+
+    if err != nil {
+        log.Fatalln(err)
+
+    }
+
+    currentViewPath :=  currentDirPath + string(os.PathSeparator) + "views.py"
+
+    if FileExists(currentViewPath) == false {
+        log.Fatalln(currentViewPath, " does not exists")
+    }
+
+    assetPath := GetAssetPath()
+    srcViewPath := assetPath + string(os.PathSeparator) + "views.py"
+
+    srcData, err := os.ReadFile(srcViewPath)
+
+    if err != nil {
+        log.Fatalln(err)
+
+    }
+
+    srcString := string(srcData)
+    targetString := strings.Replace(srcString, "target", viewName, -1)
+
+
+    file, err := os.OpenFile(currentViewPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    _, err = file.WriteString(targetString)
+
+
+    if err != nil {
+        log.Fatalln(err)
+    }
+
 
 }

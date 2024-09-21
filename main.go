@@ -7,7 +7,8 @@ import (
 
 func main() {
     //lib.GenerateCSS(true)
-    lib.GenerateTemplate()
+    //lib.GenerateTemplate()
+    lib.GenerateView("detail")
 
 
 }
