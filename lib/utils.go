@@ -42,7 +42,6 @@ func CopyDir(srcDirPath, dstDirPath string) error  {
         return err
     }
 
-    log.Println("Creating stat")
 
     if _, err = os.Stat(dstDirPath); os.IsNotExist(err)  {
         err := os.Mkdir(dstDirPath, os.ModeDir|0775)
