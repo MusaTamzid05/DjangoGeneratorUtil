@@ -20,18 +20,9 @@ func CopyFile(srcPath, dstDirPath string) error  {
         return err
     }
 
-    log.Println("Read ..")
-
     fileName := GetLastNameFromPath(srcPath)
     dstPath := dstDirPath + string(os.PathSeparator) + fileName
 
-    f, err := os.Create(dstPath)
-
-    if err != nil {
-        return err
-    }
-
-    defer f.Close()
 
     err = os.WriteFile(dstPath, inFile, 0755)
 
@@ -41,4 +32,19 @@ func CopyFile(srcPath, dstDirPath string) error  {
 
     return nil
 
+}
+
+
+func CopyDir(srcDirPath, dstDirPath string) error  {
+    files, err := os.ReadDir(srcDirPath)
+
+    if err != nil {
+        return err
+    }
+
+    for _, file := range files  {
+        log.Println(file.Name())
+    }
+
+    return nil
 }
