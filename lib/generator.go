@@ -65,3 +65,33 @@ func GenerateCSS(bootstrap bool) {
 }
 
 
+func GenerateTemplate() {
+    templateName := "templates"
+    err := os.Mkdir(templateName, os.ModeDir|0775)
+
+    if err !=  nil {
+        log.Fatalln(templateName, err)
+    }
+
+    currentPath, err :=  os.Getwd()
+
+    if err !=  nil {
+        log.Fatalln(err)
+    }
+
+    currentDirName := GetLastNameFromPath(currentPath)
+
+
+    dstDirPath := currentPath + string(os.PathSeparator) +  templateName +  string(os.PathSeparator) +  currentDirName
+
+
+    err = os.Mkdir(dstDirPath, os.ModeDir|0775)
+
+    if err !=  nil {
+        log.Fatalln(err)
+    }
+
+    baseTemplatePath := "assets" + string(os.PathSeparator) + "base.html"
+    err = CopyFile(baseTemplatePath, dstDirPath)
+
+}
