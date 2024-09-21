@@ -42,8 +42,38 @@ func CopyDir(srcDirPath, dstDirPath string) error  {
         return err
     }
 
+    log.Println("Creating stat")
+
+    if _, err = os.Stat(dstDirPath); os.IsNotExist(err)  {
+        err := os.Mkdir(dstDirPath, os.ModeDir|0775)
+
+        if err !=  nil {
+            log.Fatalln(dstDirPath, err)
+        }
+    }
+
+
     for _, file := range files  {
-        log.Println(file.Name())
+        if file.IsDir() {
+            childDirPath := srcDirPath + string(os.PathSeparator) + file.Name()
+            childDstDirPath := dstDirPath + string(os.PathSeparator) + file.Name()
+            err = CopyDir(childDirPath, childDstDirPath)
+
+            if err != nil {
+                log.Fatalln(err)
+
+            }
+
+            continue
+        }
+
+
+        srcFilePath := srcDirPath + string(os.PathSeparator) + file.Name()
+        err = CopyFile(srcFilePath, dstDirPath)
+
+        if err != nil {
+            return err
+        }
     }
 
     return nil
