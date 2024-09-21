@@ -94,6 +94,7 @@ func GenerateTemplate() {
 
 func GenerateView(viewName string) {
 
+    // update the views.py
     currentDirPath, err := os.Getwd()
 
     if err != nil {
@@ -127,11 +128,43 @@ func GenerateView(viewName string) {
         log.Fatalln(err)
     }
 
+    defer file.Close()
+
     _, err = file.WriteString(targetString)
 
 
     if err != nil {
         log.Fatalln(err)
+    }
+
+
+    // update the tempalte dir
+    currentDirName := GetLastNameFromPath(currentDirPath)
+    templateDirPath := currentDirPath + string(os.PathSeparator) + "templates" + string(os.PathSeparator) + currentDirName
+
+    _, err = os.Stat(templateDirPath)
+
+    if os.IsNotExist(err) {
+        log.Fatalln("No template exists , Generate the template first")
+    }
+
+    srcTemplateData, err := os.ReadFile(GetAssetPath() + string(os.PathSeparator) + "child.html")
+
+    if err != nil {
+        log.Fatalln(err)
+
+    }
+
+    childTemplatePath :=  templateDirPath + string(os.PathSeparator) + viewName + ".html"
+
+    err = os.WriteFile(
+        childTemplatePath,
+        srcTemplateData, 
+        0775)
+
+    if err != nil {
+        log.Fatalln(err)
+
     }
 
 
