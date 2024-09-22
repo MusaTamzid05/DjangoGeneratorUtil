@@ -1,4 +1,5 @@
 from .views import somethng
+from .views import somethng
 from .views import city
 from .views import city
 from .views import city
@@ -21,6 +22,8 @@ urlpatterns = [
 	path("city/",city),
 
 	path("city/",city),
+
+	path("somethng/",somethng),
 
 	path("somethng/",somethng),
 

@@ -89,15 +89,6 @@ func FileExists(path string) bool {
 }
 
 func GetAssetPath() string   {
-
-    currentDirPath, err := os.Getwd()
-
-    if err != nil {
-        log.Fatalln(err)
-
-    }
-
-
-    return currentDirPath  + string(os.PathSeparator) + "assets"
+    return os.Getenv("DJANGO_GENERATOR_DIR") + string(os.PathSeparator) + "assets"
 }
 
