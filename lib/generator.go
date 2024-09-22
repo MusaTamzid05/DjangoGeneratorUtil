@@ -167,5 +167,88 @@ func GenerateView(viewName string) {
 
     }
 
+    // update the urls
+
+
+    srcUrlPath := currentDirPath + string(os.PathSeparator) + "urls.py"
+    srcUrlBytes , err := os.ReadFile(srcUrlPath)
+
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    srcUrlLines := strings.Split(string(srcUrlBytes), "\n")
+
+    urlPatternStartIndex := -1
+
+    for index, line := range srcUrlLines {
+        if strings.Contains(line,"urlpatterns") {
+            urlPatternStartIndex = index
+            break
+        }
+    }
+
+    urlPatternEndIndex := -1
+
+    for index, line := range srcUrlLines[urlPatternStartIndex:len(srcUrlLines)] {
+        if strings.Contains(line, "]") {
+            urlPatternEndIndex = urlPatternStartIndex + index
+            break
+        }
+    }
+
+    newString := "\tpath(\"" + viewName + "/\"," + viewName + "),"
+    srcUrlLines[urlPatternEndIndex] = newString
+    srcUrlLines = append(srcUrlLines, "\t]")
+
+    temp := "from .views import " + viewName + ""
+    srcUrlLines = append([]string {temp}, srcUrlLines...)
+
+
+    newUrlFileStr := ""
+
+    for _, line := range srcUrlLines {
+        newUrlFileStr += line + "\n"
+    }
+
+    err = os.Remove(srcUrlPath)
+
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    newURLFile, err := os.Create(srcUrlPath)
+
+
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    _, err = newURLFile.WriteString(newUrlFileStr)
+
+
+    if err != nil {
+        log.Fatalln(err)
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
