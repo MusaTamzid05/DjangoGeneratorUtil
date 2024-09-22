@@ -76,3 +76,6 @@ def city(request):
 
 def city(request):
     return render(request, 'city.html')
+
+def somethng(request):
+    return render(request, 'somethng.html')
