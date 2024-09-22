@@ -38,14 +38,14 @@ func GenerateCSS(bootstrap bool) {
             log.Fatalln(dirName, err)
         }
 
-        err = CopyFile("assets/scripts.js", "static" + string(os.PathSeparator) + "js")
+        err = CopyFile(GetAssetPath() + "/scripts.js", "static" + string(os.PathSeparator) + "js")
 
         if err !=  nil {
             log.Fatalln(err)
         }
 
 
-        err = CopyFile("assets/styles.css", "static" + string(os.PathSeparator) + "css")
+        err = CopyFile(GetAssetPath() + "/styles.css", "static" + string(os.PathSeparator) + "css")
 
 
         if err !=  nil {
@@ -55,7 +55,7 @@ func GenerateCSS(bootstrap bool) {
 
 
     } else {
-        CopyDir("assets/bootstrap", "static")
+        CopyDir(GetAssetPath() + "/bootstrap", "static")
 
     }
 }
@@ -87,7 +87,7 @@ func GenerateTemplate() {
         log.Fatalln(err)
     }
 
-    baseTemplatePath := "assets" + string(os.PathSeparator) + "base.html"
+    baseTemplatePath := GetAssetPath() + string(os.PathSeparator) + "base.html"
     err = CopyFile(baseTemplatePath, dstDirPath)
 
 }
